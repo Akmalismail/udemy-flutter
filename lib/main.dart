@@ -13,6 +13,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final questions = const [
+    {
+      'questionText': 'What\'s your favorite colour?',
+      'answers': ['Black', 'Red', 'Green', 'White', 'Blue', 'Pink'],
+    },
+    {
+      'questionText': 'What\'s your favorite animal?',
+      'answers': ['Cat', 'Dog', 'Lion', 'Rabbit', 'Snake'],
+    },
+    {
+      'questionText': 'Who\'s your favorite instructor?',
+      'answers': ['Max', 'Max', 'Max'],
+    }
+  ];
+
   var _questionIndex = 0;
 
   void _answerQuestion() {
@@ -20,27 +35,13 @@ class _MyAppState extends State<MyApp> {
       _questionIndex = _questionIndex >= 2 ? 0 : _questionIndex + 1;
     });
     print(_questionIndex);
+    if (_questionIndex < questions.length) {
+      print('We have more questions!');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    const questions = [
-      {
-        'questionText': 'What\'s your favorite colour?',
-        'answers': ['Black', 'Red', 'Green', 'White', 'Blue', 'Pink'],
-      },
-      {
-        'questionText': 'What\'s your favorite animal?',
-        'answers': ['Cat', 'Dog', 'Lion', 'Rabbit', 'Snake'],
-      },
-      {
-        'questionText': 'Who\'s your favorite instructor?',
-        'answers': ['Max', 'Max', 'Max'],
-      }
-    ];
-
-    // questions = []; // does not work if questions is a const
-
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
