@@ -13,6 +13,8 @@ class NewTransaction extends StatelessWidget {
         ? double.parse(amountController.text)
         : 0;
 
+    print(enteredTitle);
+    print(enteredAmount);
     if (enteredTitle.isEmpty || enteredAmount <= 0) {
       return;
     }
