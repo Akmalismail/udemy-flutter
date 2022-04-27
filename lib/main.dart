@@ -20,12 +20,20 @@ class MyApp extends StatelessWidget {
           ),
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
+              bodyText1: TextStyle(
+                fontFamily: 'OpenSans',
               ),
+              bodyText2: TextStyle(
+                fontFamily: 'OpenSans',
+              ),
+              headline6: TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              button: TextStyle(
+                fontFamily: 'OpenSans',
+              )),
           appBarTheme: AppBarTheme(
             titleTextStyle: TextStyle(
               fontFamily: 'OpenSans',
