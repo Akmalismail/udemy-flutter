@@ -14,26 +14,28 @@ class MyApp extends StatelessWidget {
       title: 'Personal Expenses',
       theme: ThemeData(
           primarySwatch: Colors.purple,
-          colorScheme: ColorScheme.light(
-            primary: Colors.purple,
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.purple,
+          ).copyWith(
             secondary: Colors.amber,
           ),
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
-              bodyText1: TextStyle(
-                fontFamily: 'OpenSans',
+                bodyText1: TextStyle(
+                  fontFamily: 'OpenSans',
+                ),
+                bodyText2: TextStyle(
+                  fontFamily: 'OpenSans',
+                ),
+                headline6: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                button: TextStyle(
+                  fontFamily: 'OpenSans',
+                ),
               ),
-              bodyText2: TextStyle(
-                fontFamily: 'OpenSans',
-              ),
-              headline6: TextStyle(
-                fontFamily: 'OpenSans',
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-              button: TextStyle(
-                fontFamily: 'OpenSans',
-              )),
           appBarTheme: AppBarTheme(
             titleTextStyle: TextStyle(
               fontFamily: 'OpenSans',
