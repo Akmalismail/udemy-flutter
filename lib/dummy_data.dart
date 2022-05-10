@@ -100,7 +100,7 @@ const DUMMY_MEALS = const [
     affordability: Affordability.Affordable,
     complexity: Complexity.Simple,
     imageUrl:
-        'https://cdn.pixabay.com/photo/2018/07/11/21/51/toast-3532016_1280.jpg',
+        'https://www.daringgourmet.com/wp-content/uploads/2020/05/Toast-Hawaii-13.jpg',
     duration: 10,
     ingredients: [
       '1 Slice White Bread',
@@ -129,7 +129,7 @@ const DUMMY_MEALS = const [
     affordability: Affordability.Pricey,
     complexity: Complexity.Simple,
     imageUrl:
-        'https://cdn.pixabay.com/photo/2014/10/23/18/05/burger-500054_1280.jpg',
+        'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2004/2/25/0/bw2b07_hambugers1.jpg.rend.hgtvcom.826.620.suffix/1558017418187.jpeg',
     duration: 45,
     ingredients: [
       '300g Cattle Hack',
@@ -160,7 +160,7 @@ const DUMMY_MEALS = const [
     affordability: Affordability.Luxurious,
     complexity: Complexity.Challenging,
     imageUrl:
-        'https://cdn.pixabay.com/photo/2018/03/31/19/29/schnitzel-3279045_1280.jpg',
+        'https://www.thespruceeats.com/thmb/n0iahXlWKJEzXiB9tWQefZjnrF4=/940x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/wiener-schnitzel-recipe-1447089-Hero-5b587d6c46e0fb0071b0059d.jpg',
     duration: 60,
     ingredients: [
       '8 Veal Cutlets',
@@ -197,7 +197,7 @@ const DUMMY_MEALS = const [
     affordability: Affordability.Luxurious,
     complexity: Complexity.Simple,
     imageUrl:
-        'https://cdn.pixabay.com/photo/2016/10/25/13/29/smoked-salmon-salad-1768890_1280.jpg',
+        'https://www.acouplecooks.com/wp-content/uploads/2021/07/Smoked-Salmon-Salad-010.jpg',
     duration: 15,
     ingredients: [
       'Arugula',
@@ -232,7 +232,7 @@ const DUMMY_MEALS = const [
     affordability: Affordability.Affordable,
     complexity: Complexity.Hard,
     imageUrl:
-        'https://cdn.pixabay.com/photo/2017/05/01/05/18/pastry-2274750_1280.jpg',
+        'https://www.foodiewithfamily.com/wp-content/uploads/2040/06/Creamy-Orange-Mousse-2-600x900.jpg',
     duration: 240,
     ingredients: [
       '4 Sheets of Gelatine',
@@ -267,7 +267,7 @@ const DUMMY_MEALS = const [
     affordability: Affordability.Affordable,
     complexity: Complexity.Simple,
     imageUrl:
-        'https://cdn.pixabay.com/photo/2018/07/10/21/23/pancake-3529653_1280.jpg',
+        'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2022%2F02%2F17%2F21014-Good-old-Fashioned-Pancakes-mfs_002.jpg',
     duration: 20,
     ingredients: [
       '1 1/2 Cups all-purpose Flour',
@@ -298,7 +298,7 @@ const DUMMY_MEALS = const [
     affordability: Affordability.Pricey,
     complexity: Complexity.Challenging,
     imageUrl:
-        'https://cdn.pixabay.com/photo/2018/06/18/16/05/indian-food-3482749_1280.jpg',
+        'https://salu-salo.com/wp-content/uploads/2017/08/Creamy-Mild-Chicken-Curry.jpg.webp',
     duration: 35,
     ingredients: [
       '4 Chicken Breasts',
@@ -331,7 +331,7 @@ const DUMMY_MEALS = const [
     affordability: Affordability.Affordable,
     complexity: Complexity.Hard,
     imageUrl:
-        'https://cdn.pixabay.com/photo/2014/08/07/21/07/souffle-412785_1280.jpg',
+        'https://sallysbakingaddiction.com/wp-content/uploads/2021/01/chocolate-souffles.jpg.webp',
     duration: 45,
     ingredients: [
       '1 Teaspoon melted Butter',
@@ -382,7 +382,7 @@ const DUMMY_MEALS = const [
     affordability: Affordability.Luxurious,
     complexity: Complexity.Simple,
     imageUrl:
-        'https://cdn.pixabay.com/photo/2018/04/09/18/26/asparagus-3304997_1280.jpg',
+        'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F19%2F2010%2F05%2F17%2Ftomato-salad-su-x.jpg',
     duration: 30,
     ingredients: [
       'White and Green Asparagus',
