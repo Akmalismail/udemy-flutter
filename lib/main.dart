@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
               ),
               headline4: TextStyle(
                 fontSize: 20,
-                // fontFamily: 'RobotoCondensed',
+                fontFamily: 'RobotoCondensed',
                 fontWeight: FontWeight.bold,
                 color: Color.fromRGBO(20, 51, 51, 1),
               ),
