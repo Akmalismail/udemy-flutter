@@ -54,6 +54,7 @@ class CartScreen extends StatelessWidget {
               itemCount: cartProvider.items.length,
               itemBuilder: (context, index) => CartItem(
                 cartProvider.items.values.toList()[index].id,
+                cartProvider.items.keys.toList()[index],
                 cartProvider.items.values.toList()[index].title,
                 cartProvider.items.values.toList()[index].price,
                 cartProvider.items.values.toList()[index].quantity,
