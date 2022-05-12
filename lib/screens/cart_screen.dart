@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart_provider.dart' show CartProvider;
+import '../providers/orders_provider.dart';
 import '../widgets/cart_item.dart';
 
 class CartScreen extends StatelessWidget {
@@ -42,7 +43,17 @@ class CartScreen extends StatelessWidget {
                   ),
                   TextButton(
                     child: Text('ORDER NOW'),
-                    onPressed: () {},
+                    onPressed: () {
+                      Provider.of<OrdersProvider>(
+                        context,
+                        listen: false,
+                      ).addOrder(
+                        cartProvider.items.values.toList(),
+                        cartProvider.totalAmount,
+                      );
+
+                      cartProvider.clear();
+                    },
                   ),
                 ],
               ),
