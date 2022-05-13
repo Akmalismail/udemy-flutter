@@ -30,7 +30,7 @@ class CartScreen extends StatelessWidget {
                   Consumer<CartProvider>(
                     builder: (_, cartItem, __) => Chip(
                       label: Text(
-                        '\$${cartItem.totalAmount}',
+                        '\$${cartItem.totalAmount.toStringAsFixed(2)}',
                         style: TextStyle(
                           color: Theme.of(context)
                               .primaryTextTheme
