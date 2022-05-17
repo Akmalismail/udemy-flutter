@@ -50,6 +50,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   void _updateImageUrl() {
     if (!_imageUrlFocusNode.hasFocus) {
+      var urlPattern =
+          r"(https?|ftp)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?";
+      var regex = new RegExp(urlPattern, caseSensitive: false);
+
+      if (!regex.hasMatch(_imageUrlController.text)) {
+        return;
+      }
+
       setState(() {});
     }
   }
@@ -122,6 +130,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_descriptionFocusNode);
                 },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a price';
+                  }
+
+                  if (double.tryParse(value) == null) {
+                    return 'Please enter a valid number';
+                  }
+
+                  if (double.parse(value) <= 0) {
+                    return 'Please enter a number greater than 0';
+                  }
+
+                  return null;
+                },
                 onSaved: (value) {
                   _editedProduct = ProductProvider(
                     id: _editedProduct.id,
@@ -137,6 +160,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 maxLines: 3,
                 keyboardType: TextInputType.multiline,
                 focusNode: _descriptionFocusNode,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a description';
+                  }
+
+                  if (value.length < 10) {
+                    return 'Should be at least 10 characters long';
+                  }
+
+                  return null;
+                },
                 onSaved: (value) {
                   _editedProduct = ProductProvider(
                     id: _editedProduct.id,
@@ -181,6 +215,29 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       focusNode: _imageUrlFocusNode,
                       onFieldSubmitted: (_) {
                         _saveForm();
+                      },
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter an image URL';
+                        }
+
+                        var urlPattern =
+                            r"(https?|ftp)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?";
+                        var regex =
+                            new RegExp(urlPattern, caseSensitive: false);
+
+                        if (!regex.hasMatch(value)) {
+                          return 'Please enter a valid URL';
+                        }
+
+                        // Disabled to use picsum
+                        // if (!value.endsWith('.png') &&
+                        //     !value.endsWith('.jpg') &&
+                        //     !value.endsWith('.jpeg')) {
+                        //   return 'Please enter a valid image URL';
+                        // }
+
+                        return null;
                       },
                       onSaved: (value) {
                         _editedProduct = ProductProvider(
