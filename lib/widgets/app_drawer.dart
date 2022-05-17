@@ -20,6 +20,7 @@ class AppDrawer extends StatelessWidget {
             Navigator.of(context).pushReplacementNamed('/');
           },
         ),
+        Divider(),
         ListTile(
           leading: const Icon(Icons.payment),
           title: const Text('Orders'),
