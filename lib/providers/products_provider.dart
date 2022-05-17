@@ -65,8 +65,16 @@ class ProductsProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void addProduct(ProductProvider item) {
-    _items.add(item);
+  void addProduct(ProductProvider product) {
+    final newProduct = ProductProvider(
+      id: DateTime.now().toString(),
+      title: product.title,
+      description: product.description,
+      price: product.price,
+      imageUrl: product.imageUrl,
+    );
+    _items.add(newProduct);
+    // _items.insert(0, newProduct); // at beginning of list
     notifyListeners();
   }
 }
