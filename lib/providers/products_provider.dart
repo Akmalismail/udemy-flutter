@@ -68,27 +68,20 @@ class ProductsProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void addProduct(ProductProvider product) {
-    // const url =
-    //     'https://flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app/products.json';
-
+  Future<void> addProduct(ProductProvider product) {
     final url = Uri.https(
         'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
         '/products.json');
 
-    http
-        .post(
-      url,
-      body: json.encode(
-        {
-          'title': product.title,
-          'description': product.description,
-          'imageUrl': product.imageUrl,
-          'price': product.price,
-          'isFavorite': product.isFavorite,
-        },
-      ),
-    )
+    return http
+        .post(url,
+            body: json.encode({
+              'title': product.title,
+              'description': product.description,
+              'imageUrl': product.imageUrl,
+              'price': product.price,
+              'isFavorite': product.isFavorite,
+            }))
         .then((response) {
       final newProduct = ProductProvider(
         id: json.decode(response.body)['name'],
