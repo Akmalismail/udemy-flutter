@@ -76,7 +76,8 @@ class ProductsProvider with ChangeNotifier {
         'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
         '/products.json');
 
-    http.post(
+    http
+        .post(
       url,
       body: json.encode(
         {
@@ -87,18 +88,19 @@ class ProductsProvider with ChangeNotifier {
           'isFavorite': product.isFavorite,
         },
       ),
-    );
-
-    final newProduct = ProductProvider(
-      id: DateTime.now().toString(),
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      imageUrl: product.imageUrl,
-    );
-    _items.add(newProduct);
-    // _items.insert(0, newProduct); // at beginning of list
-    notifyListeners();
+    )
+        .then((response) {
+      final newProduct = ProductProvider(
+        id: json.decode(response.body)['name'],
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+      );
+      _items.add(newProduct);
+      // _items.insert(0, newProduct); // at beginning of list
+      notifyListeners();
+    });
   }
 
   void updateProduct(String id, ProductProvider newProduct) {
