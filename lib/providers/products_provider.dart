@@ -71,7 +71,7 @@ class ProductsProvider with ChangeNotifier {
   Future<void> addProduct(ProductProvider product) {
     final url = Uri.https(
         'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-        '/products.json');
+        '/products');
 
     return http
         .post(url,
@@ -93,6 +93,9 @@ class ProductsProvider with ChangeNotifier {
       _items.add(newProduct);
       // _items.insert(0, newProduct); // at beginning of list
       notifyListeners();
+    }).catchError((error) {
+      print(error);
+      throw error;
     });
   }
 
