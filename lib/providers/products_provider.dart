@@ -125,7 +125,26 @@ class ProductsProvider with ChangeNotifier {
   }
 
   void deleteProduct(String id) {
-    _items.removeWhere((product) => product.id == id);
+    // optimistic UI update approach.
+    final url = Uri.https(
+        'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
+        '/products/$id');
+    final existingProductIndex =
+        _items.indexWhere((product) => product.id == id);
+    var existingProduct = _items[existingProductIndex];
+
+    http.delete(url).then((response) {
+      // for .delete, errors go in .then block
+      if (response.statusCode >= 400) {}
+
+      // clear reference so dart can remove it from memory
+      existingProduct = null;
+    }).catchError((_) {
+      // rollback deletion if fail
+      _items.insert(existingProductIndex, existingProduct);
+    });
+
+    _items.removeAt(existingProductIndex);
     notifyListeners();
   }
 }
