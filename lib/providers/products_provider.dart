@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/models/http_exception.dart';
 import 'package:http/http.dart' as http;
 
 import 'product_provider.dart';
@@ -124,27 +125,32 @@ class ProductsProvider with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
+  void deleteProduct(String id) async {
     // optimistic UI update approach.
     final url = Uri.https(
         'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-        '/products/$id');
+        '/products/$id.json');
     final existingProductIndex =
         _items.indexWhere((product) => product.id == id);
     var existingProduct = _items[existingProductIndex];
 
-    http.delete(url).then((response) {
-      // for .delete, errors go in .then block
-      if (response.statusCode >= 400) {}
-
-      // clear reference so dart can remove it from memory
-      existingProduct = null;
-    }).catchError((_) {
-      // rollback deletion if fail
-      _items.insert(existingProductIndex, existingProduct);
-    });
-
+    // optimistic ui update, delete first before http request.
     _items.removeAt(existingProductIndex);
     notifyListeners();
+
+    final response = await http.delete(url);
+
+    // for .delete, errors go in .then block
+    if (response.statusCode >= 400) {
+      // rollback deletion if fail
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+
+      // throw exception
+      throw HttpException('Could not delete product.');
+    }
+
+    // clear reference so dart can remove it from memory
+    existingProduct = null;
   }
 }
