@@ -13,8 +13,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  var _isLoading = false;
-
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
@@ -48,48 +46,7 @@ class _CartScreenState extends State<CartScreen> {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  _isLoading
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                          ),
-                          child: CircularProgressIndicator(),
-                        )
-                      : TextButton(
-                          child: Text('ORDER NOW'),
-                          onPressed: cartProvider.items.length == 0
-                              ? null
-                              : () async {
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-
-                                  try {
-                                    await Provider.of<OrdersProvider>(
-                                      context,
-                                      listen: false,
-                                    ).addOrder(
-                                      cartProvider.items.values.toList(),
-                                      cartProvider.totalAmount,
-                                    );
-
-                                    cartProvider.clear();
-                                  } catch (error) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          'Order failed!',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    );
-                                  } finally {
-                                    setState(() {
-                                      _isLoading = false;
-                                    });
-                                  }
-                                },
-                        ),
+                  OrderButton(cartProvider: cartProvider),
                 ],
               ),
             ),
@@ -110,5 +67,61 @@ class _CartScreenState extends State<CartScreen> {
         ],
       ),
     );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  final CartProvider cartProvider;
+
+  OrderButton({
+    @required this.cartProvider,
+  });
+
+  @override
+  State<OrderButton> createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return _isLoading
+        ? CircularProgressIndicator()
+        : TextButton(
+            child: Text('ORDER NOW'),
+            onPressed: (widget.cartProvider.totalAmount <= 0 || _isLoading)
+                ? null
+                : () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+
+                    try {
+                      await Provider.of<OrdersProvider>(
+                        context,
+                        listen: false,
+                      ).addOrder(
+                        widget.cartProvider.items.values.toList(),
+                        widget.cartProvider.totalAmount,
+                      );
+
+                      widget.cartProvider.clear();
+                    } catch (error) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Order failed!',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      );
+                    } finally {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    }
+                  },
+          );
   }
 }

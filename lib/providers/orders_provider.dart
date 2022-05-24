@@ -35,28 +35,30 @@ class OrdersProvider with ChangeNotifier {
       final data = json.decode(response.body) as Map<String, dynamic>;
       final List<Order> loadedOrders = [];
 
-      data.forEach(
-        (orderId, orderData) {
-          // print(json.decode(orderData['products']) as List<Cart>);
-          loadedOrders.add(
-            Order(
-              id: orderId,
-              amount: orderData['amount'],
-              products: (json.decode(orderData['products']) as Iterable)
-                  .map(
-                    (cartItem) => Cart(
-                      id: cartItem['id'],
-                      price: cartItem['price'],
-                      title: cartItem['title'],
-                      quantity: cartItem['quantity'],
-                    ),
-                  )
-                  .toList(),
-              dateTime: DateTime.parse(orderData['dateTime']),
-            ),
-          );
-        },
-      );
+      if (data != null) {
+        data.forEach(
+          (orderId, orderData) {
+            // print(json.decode(orderData['products']) as List<Cart>);
+            loadedOrders.add(
+              Order(
+                id: orderId,
+                amount: orderData['amount'],
+                products: (orderData['products'] as List<dynamic>)
+                    .map(
+                      (cartItem) => Cart(
+                        id: cartItem['id'],
+                        price: cartItem['price'],
+                        title: cartItem['title'],
+                        quantity: cartItem['quantity'],
+                      ),
+                    )
+                    .toList(),
+                dateTime: DateTime.parse(orderData['dateTime']),
+              ),
+            );
+          },
+        );
+      }
 
       _orders = loadedOrders;
       notifyListeners();
@@ -69,6 +71,7 @@ class OrdersProvider with ChangeNotifier {
     final url = Uri.https(
         'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
         '/orders.json');
+    final timestamp = DateTime.now();
 
     try {
       final response = await http.post(
@@ -76,10 +79,8 @@ class OrdersProvider with ChangeNotifier {
         body: json.encode(
           {
             'amount': total,
-            'dateTime': DateTime.now().toString(),
-            'products': json.encode(
-              cartProducts.map((e) => e.toJson()).toList(),
-            ),
+            'dateTime': timestamp.toIso8601String(),
+            'products': cartProducts.map((e) => e.toJson()).toList(),
           },
         ),
       );
@@ -87,7 +88,7 @@ class OrdersProvider with ChangeNotifier {
       final newOrder = Order(
         id: json.decode(response.body)['name'],
         amount: total,
-        dateTime: DateTime.now(),
+        dateTime: timestamp,
         products: cartProducts,
       );
 
