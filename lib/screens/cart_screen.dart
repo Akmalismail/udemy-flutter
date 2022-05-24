@@ -5,8 +5,15 @@ import '../providers/cart_provider.dart';
 import '../providers/orders_provider.dart';
 import '../widgets/cart_item.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   static const routeName = '/cart';
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  var _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,20 +48,48 @@ class CartScreen extends StatelessWidget {
                       backgroundColor: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  TextButton(
-                    child: Text('ORDER NOW'),
-                    onPressed: () {
-                      Provider.of<OrdersProvider>(
-                        context,
-                        listen: false,
-                      ).addOrder(
-                        cartProvider.items.values.toList(),
-                        cartProvider.totalAmount,
-                      );
+                  _isLoading
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                          ),
+                          child: CircularProgressIndicator(),
+                        )
+                      : TextButton(
+                          child: Text('ORDER NOW'),
+                          onPressed: cartProvider.items.length == 0
+                              ? null
+                              : () async {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
 
-                      cartProvider.clear();
-                    },
-                  ),
+                                  try {
+                                    await Provider.of<OrdersProvider>(
+                                      context,
+                                      listen: false,
+                                    ).addOrder(
+                                      cartProvider.items.values.toList(),
+                                      cartProvider.totalAmount,
+                                    );
+
+                                    cartProvider.clear();
+                                  } catch (error) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Order failed!',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    );
+                                  } finally {
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                  }
+                                },
+                        ),
                 ],
               ),
             ),

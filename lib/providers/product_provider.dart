@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter_complete_guide/models/http_exception.dart';
+import 'package:http/http.dart' as http;
 
 class ProductProvider with ChangeNotifier {
   final String id;
@@ -17,8 +21,28 @@ class ProductProvider with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void toggleFavoriteStatus() {
+  Future<void> toggleFavoriteStatus() async {
+    final url = Uri.https(
+        'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
+        '/products/$id.json');
+
     isFavorite = !isFavorite;
     notifyListeners();
+
+    final response = await http.patch(
+      url,
+      body: json.encode(
+        {
+          'isFavorite': isFavorite,
+        },
+      ),
+    );
+
+    if (response.statusCode >= 400) {
+      isFavorite = !isFavorite;
+      notifyListeners();
+
+      throw HttpException('Could not favorite product.');
+    }
   }
 }

@@ -55,6 +55,7 @@ class ProductsProvider with ChangeNotifier {
               description: productData['description'],
               price: productData['price'],
               imageUrl: productData['imageUrl'],
+              isFavorite: productData['isFavorite'],
             ),
           );
         },
@@ -73,14 +74,18 @@ class ProductsProvider with ChangeNotifier {
         '/products.json');
 
     try {
-      final response = await http.post(url,
-          body: json.encode({
+      final response = await http.post(
+        url,
+        body: json.encode(
+          {
             'title': product.title,
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
             'isFavorite': product.isFavorite,
-          }));
+          },
+        ),
+      );
 
       final newProduct = ProductProvider(
         id: json.decode(response.body)['name'],
