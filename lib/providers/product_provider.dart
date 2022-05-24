@@ -21,27 +21,42 @@ class ProductProvider with ChangeNotifier {
     this.isFavorite = false,
   });
 
+  void _setFavorite(bool newValue) {
+    isFavorite = newValue;
+    notifyListeners();
+  }
+
   Future<void> toggleFavoriteStatus() async {
+    final oldStatus = isFavorite;
+
+    _setFavorite(!isFavorite);
+
     final url = Uri.https(
         'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
         '/products/$id.json');
 
-    isFavorite = !isFavorite;
-    notifyListeners();
+    /**
+     * Flutter only catches errors for GET and POST requests.
+     * For PUT, PATCH, and DELETE, errors will still be forwarded to .then blocks.
+     * 
+     * For network errors though, will always be caught.
+     */
+    try {
+      final response = await http.patch(
+        url,
+        body: json.encode(
+          {
+            'isFavorite': isFavorite,
+          },
+        ),
+      );
 
-    final response = await http.patch(
-      url,
-      body: json.encode(
-        {
-          'isFavorite': isFavorite,
-        },
-      ),
-    );
-
-    if (response.statusCode >= 400) {
-      isFavorite = !isFavorite;
-      notifyListeners();
-
+      if (response.statusCode >= 400) {
+        _setFavorite(oldStatus);
+        throw HttpException('Could not favorite product.');
+      }
+    } catch (error) {
+      _setFavorite(oldStatus);
       throw HttpException('Could not favorite product.');
     }
   }
