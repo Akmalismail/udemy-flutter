@@ -86,42 +86,40 @@ class _OrderButtonState extends State<OrderButton> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? CircularProgressIndicator()
-        : TextButton(
-            child: Text('ORDER NOW'),
-            onPressed: (widget.cartProvider.totalAmount <= 0 || _isLoading)
-                ? null
-                : () async {
-                    setState(() {
-                      _isLoading = true;
-                    });
+    return TextButton(
+      child: _isLoading ? CircularProgressIndicator() : Text('ORDER NOW'),
+      onPressed: (widget.cartProvider.totalAmount <= 0 || _isLoading)
+          ? null
+          : () async {
+              setState(() {
+                _isLoading = true;
+              });
 
-                    try {
-                      await Provider.of<OrdersProvider>(
-                        context,
-                        listen: false,
-                      ).addOrder(
-                        widget.cartProvider.items.values.toList(),
-                        widget.cartProvider.totalAmount,
-                      );
+              try {
+                await Provider.of<OrdersProvider>(
+                  context,
+                  listen: false,
+                ).addOrder(
+                  widget.cartProvider.items.values.toList(),
+                  widget.cartProvider.totalAmount,
+                );
 
-                      widget.cartProvider.clear();
-                    } catch (error) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Order failed!',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      );
-                    } finally {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                    }
-                  },
-          );
+                widget.cartProvider.clear();
+              } catch (error) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Order failed!',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              } finally {
+                setState(() {
+                  _isLoading = false;
+                });
+              }
+            },
+    );
   }
 }

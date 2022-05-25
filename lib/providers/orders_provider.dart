@@ -60,7 +60,7 @@ class OrdersProvider with ChangeNotifier {
         );
       }
 
-      _orders = loadedOrders;
+      _orders = loadedOrders.reversed.toList();
       notifyListeners();
     } catch (error) {
       throw error;
