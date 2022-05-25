@@ -20,6 +20,12 @@ class Order {
 
 class OrdersProvider with ChangeNotifier {
   List<Order> _orders = [];
+  String authToken;
+
+  void update(String token, List<Order> orders) {
+    authToken = token;
+    _orders = orders;
+  }
 
   List<Order> get orders {
     return [..._orders];
@@ -27,8 +33,10 @@ class OrdersProvider with ChangeNotifier {
 
   Future<void> fetchAndSetOrders() async {
     final url = Uri.https(
-        'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-        '/orders.json');
+      'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
+      '/orders.json',
+      {'auth': authToken},
+    );
 
     try {
       final response = await http.get(url);
@@ -69,8 +77,10 @@ class OrdersProvider with ChangeNotifier {
 
   Future<void> addOrder(List<Cart> cartProducts, double total) async {
     final url = Uri.https(
-        'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-        '/orders.json');
+      'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
+      '/orders.json',
+      {'auth': authToken},
+    );
     final timestamp = DateTime.now();
 
     try {

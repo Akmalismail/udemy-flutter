@@ -65,8 +65,10 @@ class ProductsProvider with ChangeNotifier {
 
   Future<void> addProduct(ProductProvider product) async {
     final url = Uri.https(
-        'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-        '/products.json');
+      'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
+      '/products.json',
+      {'auth': authToken},
+    );
 
     try {
       final response = await http.post(
@@ -104,8 +106,11 @@ class ProductsProvider with ChangeNotifier {
 
     if (productIndex >= 0) {
       final url = Uri.https(
-          'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-          '/products/$id.json');
+        'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
+        '/products/$id.json',
+        {'auth': authToken},
+      );
+
       await http.patch(
         url,
         body: json.encode(
@@ -128,8 +133,11 @@ class ProductsProvider with ChangeNotifier {
   void deleteProduct(String id) async {
     // optimistic UI update approach.
     final url = Uri.https(
-        'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-        '/products/$id.json');
+      'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
+      '/products/$id.json',
+      {'auth': authToken},
+    );
+
     final existingProductIndex =
         _items.indexWhere((product) => product.id == id);
     var existingProduct = _items[existingProductIndex];

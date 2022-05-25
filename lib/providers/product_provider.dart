@@ -26,14 +26,16 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteStatus() async {
+  Future<void> toggleFavoriteStatus(String token) async {
     final oldStatus = isFavorite;
 
     _setFavorite(!isFavorite);
 
     final url = Uri.https(
-        'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-        '/products/$id.json');
+      'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
+      '/products/$id.json',
+      {'auth': token},
+    );
 
     /**
      * Flutter only catches errors for GET and POST requests.
