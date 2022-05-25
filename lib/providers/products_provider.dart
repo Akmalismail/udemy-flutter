@@ -8,13 +8,14 @@ import 'product_provider.dart';
 
 class ProductsProvider with ChangeNotifier {
   List<ProductProvider> _items = [];
-  // var _showFavoritesOnly = false;
+  String authToken;
+
+  void update(String token, List<ProductProvider> items) {
+    authToken = token;
+    _items = items;
+  }
 
   List<ProductProvider> get items {
-    // if (_showFavoritesOnly) {
-    //   return _items.where((product) => product.isFavorite).toList();
-    // }
-
     return [..._items];
   }
 
@@ -26,20 +27,12 @@ class ProductsProvider with ChangeNotifier {
     return _items.firstWhere((product) => product.id == id);
   }
 
-  // void showFavoritesOnly() {
-  //   _showFavoritesOnly = true;
-  //   notifyListeners();
-  // }
-
-  // void showAll() {
-  //   _showFavoritesOnly = false;
-  //   notifyListeners();
-  // }
-
   Future<void> fetchAndSetProducts() async {
     final url = Uri.https(
-        'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-        '/products.json');
+      'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
+      '/products.json',
+      {'auth': authToken},
+    );
 
     try {
       final response = await http.get(url);
