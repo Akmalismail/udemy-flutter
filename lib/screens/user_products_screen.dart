@@ -16,8 +16,18 @@ class UserProductsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final products = Provider.of<Products>(context);
-    print('rebuilding...');
+    // final products = Provider.of<Products>(context); // disabled to avoid infinite loop
+    /**
+     * Infinite loop explanation
+     * 
+     * 1. Flutter triggers build 
+     * 2. builds [FutureBuilder] 
+     * 3. [FutureBuilder] calls [_refreshProducts()]
+     * 4. [_refreshProducts()] calls [.fetchAndSetProducts]
+     * 5. [notifyListener()] in .fetchAndSetProducts notifies [Provider.of<Products>(context)]
+     * 6. [Provider.of<Products>(context)] triggers build relative to [context] <-- disabled this
+     * 7. Go to 2.
+     */
 
     return Scaffold(
       appBar: AppBar(
