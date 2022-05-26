@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/providers/auth_provider.dart';
+import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/cart_provider.dart';
-import '../providers/product_provider.dart';
+import '../providers/cart.dart';
+import '../providers/product.dart';
 import '../screens/product_detail_screen.dart';
 
 class ProductItem extends StatelessWidget {
@@ -19,9 +19,9 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<ProductProvider>(context, listen: false);
-    final cart = Provider.of<CartProvider>(context, listen: false);
-    final auth = Provider.of<AuthProvider>(context, listen: false);
+    final product = Provider.of<Product>(context, listen: false);
+    final cart = Provider.of<Cart>(context, listen: false);
+    final auth = Provider.of<Auth>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -40,7 +40,7 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
-          leading: Consumer<ProductProvider>(
+          leading: Consumer<Product>(
             builder: (_, product, _c) => IconButton(
               icon: Icon(
                 product.isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -48,7 +48,10 @@ class ProductItem extends StatelessWidget {
               color: Theme.of(context).colorScheme.secondary,
               onPressed: () async {
                 try {
-                  await product.toggleFavoriteStatus(auth.token);
+                  await product.toggleFavoriteStatus(
+                    auth.token,
+                    auth.userId,
+                  );
                 } catch (error) {
                   print(error);
                 }

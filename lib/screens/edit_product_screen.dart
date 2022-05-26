@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/providers/product_provider.dart';
-import 'package:flutter_complete_guide/providers/products_provider.dart';
+import 'package:flutter_complete_guide/providers/product.dart';
+import 'package:flutter_complete_guide/providers/products.dart';
 import 'package:provider/provider.dart';
 
 class EditProductScreen extends StatefulWidget {
@@ -21,7 +21,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   // form key
   final _form = GlobalKey<FormState>();
 
-  var _editedProduct = ProductProvider(
+  var _editedProduct = Product(
     id: null,
     title: '',
     description: '',
@@ -51,8 +51,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     if (_isInit) {
       final productId = ModalRoute.of(context).settings.arguments as String;
       if (productId != null) {
-        _editedProduct = Provider.of<ProductsProvider>(context, listen: false)
-            .findById(productId);
+        _editedProduct =
+            Provider.of<Products>(context, listen: false).findById(productId);
         _initValues = {
           'title': _editedProduct.title,
           'description': _editedProduct.description,
@@ -109,13 +109,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
     });
 
     if (_editedProduct.id != null) {
-      await Provider.of<ProductsProvider>(
+      await Provider.of<Products>(
         context,
         listen: false,
       ).updateProduct(_editedProduct.id, _editedProduct);
     } else {
       try {
-        await Provider.of<ProductsProvider>(
+        await Provider.of<Products>(
           context,
           listen: false,
         ).addProduct(_editedProduct);
@@ -186,7 +186,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         return null;
                       },
                       onSaved: (value) {
-                        _editedProduct = ProductProvider(
+                        _editedProduct = Product(
                           id: _editedProduct.id,
                           title: value,
                           description: _editedProduct.description,
@@ -222,7 +222,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         return null;
                       },
                       onSaved: (value) {
-                        _editedProduct = ProductProvider(
+                        _editedProduct = Product(
                           id: _editedProduct.id,
                           title: _editedProduct.title,
                           description: _editedProduct.description,
@@ -250,7 +250,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         return null;
                       },
                       onSaved: (value) {
-                        _editedProduct = ProductProvider(
+                        _editedProduct = Product(
                           id: _editedProduct.id,
                           title: _editedProduct.title,
                           description: value,
@@ -319,7 +319,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               return null;
                             },
                             onSaved: (value) {
-                              _editedProduct = ProductProvider(
+                              _editedProduct = Product(
                                 id: _editedProduct.id,
                                 title: _editedProduct.title,
                                 description: _editedProduct.description,

@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import './cart_provider.dart';
+import 'cart.dart';
 
 class Order {
   final String id;
   final double amount;
-  final List<Cart> products;
+  final List<CartItem> products;
   final DateTime dateTime;
 
   Order({
@@ -18,7 +18,7 @@ class Order {
   });
 }
 
-class OrdersProvider with ChangeNotifier {
+class Orders with ChangeNotifier {
   List<Order> _orders = [];
   String authToken;
 
@@ -53,7 +53,7 @@ class OrdersProvider with ChangeNotifier {
                 amount: orderData['amount'],
                 products: (orderData['products'] as List<dynamic>)
                     .map(
-                      (cartItem) => Cart(
+                      (cartItem) => CartItem(
                         id: cartItem['id'],
                         price: cartItem['price'],
                         title: cartItem['title'],
@@ -75,7 +75,7 @@ class OrdersProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addOrder(List<Cart> cartProducts, double total) async {
+  Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final url = Uri.https(
       'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
       '/orders.json',

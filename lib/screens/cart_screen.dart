@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/cart_provider.dart';
-import '../providers/orders_provider.dart';
-import '../widgets/cart_item.dart';
+import '../providers/cart.dart';
+import '../providers/orders.dart';
+import '../widgets/cart_item.dart' as ca;
 
 class CartScreen extends StatefulWidget {
   static const routeName = '/cart';
@@ -15,7 +15,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
-    final cartProvider = Provider.of<CartProvider>(context);
+    final cartProvider = Provider.of<Cart>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +32,7 @@ class _CartScreenState extends State<CartScreen> {
                 children: [
                   Text('Total', style: TextStyle(fontSize: 20)),
                   Spacer(),
-                  Consumer<CartProvider>(
+                  Consumer<Cart>(
                     builder: (_, cartItem, __) => Chip(
                       label: Text(
                         '\$${cartItem.totalAmount.toStringAsFixed(2)}',
@@ -55,7 +55,7 @@ class _CartScreenState extends State<CartScreen> {
           Expanded(
             child: ListView.builder(
               itemCount: cartProvider.items.length,
-              itemBuilder: (context, index) => CartItem(
+              itemBuilder: (context, index) => ca.CartItem(
                 cartProvider.items.values.toList()[index].id,
                 cartProvider.items.keys.toList()[index],
                 cartProvider.items.values.toList()[index].title,
@@ -71,7 +71,7 @@ class _CartScreenState extends State<CartScreen> {
 }
 
 class OrderButton extends StatefulWidget {
-  final CartProvider cartProvider;
+  final Cart cartProvider;
 
   OrderButton({
     @required this.cartProvider,
@@ -96,7 +96,7 @@ class _OrderButtonState extends State<OrderButton> {
               });
 
               try {
-                await Provider.of<OrdersProvider>(
+                await Provider.of<Orders>(
                   context,
                   listen: false,
                 ).addOrder(

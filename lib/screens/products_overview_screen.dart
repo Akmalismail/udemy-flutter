@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/providers/products_provider.dart';
+import 'package:flutter_complete_guide/providers/products.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/cart_provider.dart';
+import '../providers/cart.dart';
 import '../screens/cart_screen.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/products_grid.dart';
@@ -47,7 +47,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<ProductsProvider>(context).fetchAndSetProducts().then((_) {
+      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -86,7 +86,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               ),
             ],
           ),
-          Consumer<CartProvider>(
+          Consumer<Cart>(
             builder: (_, cartItem, child) => Badge(
               child: child,
               value: cartItem.itemCount.toString(),

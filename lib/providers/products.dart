@@ -4,31 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/models/http_exception.dart';
 import 'package:http/http.dart' as http;
 
-import 'product_provider.dart';
+import 'product.dart';
 
-class ProductsProvider with ChangeNotifier {
-  List<ProductProvider> _items = [];
+class Products with ChangeNotifier {
+  List<Product> _items = [];
   String authToken;
+  String userId;
 
-  void update(String token, List<ProductProvider> items) {
+  void update(String token, String id, List<Product> items) {
     authToken = token;
     _items = items;
+    userId = id;
   }
 
-  List<ProductProvider> get items {
+  List<Product> get items {
     return [..._items];
   }
 
-  List<ProductProvider> get favoriteItems {
+  List<Product> get favoriteItems {
     return _items.where((product) => product.isFavorite).toList();
   }
 
-  ProductProvider findById(String id) {
+  Product findById(String id) {
     return _items.firstWhere((product) => product.id == id);
   }
 
   Future<void> fetchAndSetProducts() async {
-    final url = Uri.https(
+    var url = Uri.https(
       'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
       '/products.json',
       {'auth': authToken},
@@ -37,24 +39,39 @@ class ProductsProvider with ChangeNotifier {
     try {
       final response = await http.get(url);
       final data = json.decode(response.body) as Map<String, dynamic>;
-      final List<ProductProvider> loadedProducts = [];
+      final List<Product> loadedProducts = [];
 
-      if (data != null) {
-        data.forEach(
-          (productId, productData) {
-            loadedProducts.add(
-              ProductProvider(
-                id: productId,
-                title: productData['title'],
-                description: productData['description'],
-                price: productData['price'],
-                imageUrl: productData['imageUrl'],
-                isFavorite: productData['isFavorite'],
-              ),
-            );
-          },
-        );
+      if (data == null) {
+        _items = loadedProducts;
+        notifyListeners();
+        return;
       }
+
+      url = Uri.https(
+        'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
+        '/user-favorites/$userId.json',
+        {'auth': authToken},
+      );
+      final favoriteResponse = await http.get(url);
+      final favoriteData =
+          json.decode(favoriteResponse.body) as Map<String, dynamic>;
+
+      data.forEach(
+        (productId, productData) {
+          loadedProducts.add(
+            Product(
+              id: productId,
+              title: productData['title'],
+              description: productData['description'],
+              price: productData['price'],
+              imageUrl: productData['imageUrl'],
+              isFavorite: favoriteData == null
+                  ? false
+                  : favoriteData[productId] ?? false,
+            ),
+          );
+        },
+      );
 
       _items = loadedProducts;
       notifyListeners();
@@ -63,7 +80,7 @@ class ProductsProvider with ChangeNotifier {
     }
   }
 
-  Future<void> addProduct(ProductProvider product) async {
+  Future<void> addProduct(Product product) async {
     final url = Uri.https(
       'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
       '/products.json',
@@ -79,12 +96,11 @@ class ProductsProvider with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isFavorite': product.isFavorite,
           },
         ),
       );
 
-      final newProduct = ProductProvider(
+      final newProduct = Product(
         id: json.decode(response.body)['name'],
         title: product.title,
         description: product.description,
@@ -100,7 +116,7 @@ class ProductsProvider with ChangeNotifier {
     }
   }
 
-  Future<void> updateProduct(String id, ProductProvider newProduct) async {
+  Future<void> updateProduct(String id, Product newProduct) async {
     final productIndex =
         _items.indexWhere((product) => product.id == newProduct.id);
 

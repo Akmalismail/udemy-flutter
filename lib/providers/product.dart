@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_complete_guide/models/http_exception.dart';
 import 'package:http/http.dart' as http;
 
-class ProductProvider with ChangeNotifier {
+class Product with ChangeNotifier {
   final String id;
   final String title;
   final String description;
@@ -12,7 +12,7 @@ class ProductProvider with ChangeNotifier {
   final String imageUrl;
   bool isFavorite;
 
-  ProductProvider({
+  Product({
     @required this.id,
     @required this.title,
     @required this.description,
@@ -26,14 +26,14 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteStatus(String token) async {
+  Future<void> toggleFavoriteStatus(String token, String userId) async {
     final oldStatus = isFavorite;
 
     _setFavorite(!isFavorite);
 
     final url = Uri.https(
       'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/products/$id.json',
+      '/user-favorites/$userId/$id.json',
       {'auth': token},
     );
 
@@ -44,13 +44,9 @@ class ProductProvider with ChangeNotifier {
      * For network errors though, will always be caught.
      */
     try {
-      final response = await http.patch(
+      final response = await http.put(
         url,
-        body: json.encode(
-          {
-            'isFavorite': isFavorite,
-          },
-        ),
+        body: json.encode(isFavorite),
       );
 
       if (response.statusCode >= 400) {

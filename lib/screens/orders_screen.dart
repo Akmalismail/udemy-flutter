@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../widgets/app_drawer.dart';
 import '../widgets/order_item.dart';
-import '../providers/orders_provider.dart';
+import '../providers/orders.dart';
 
 class OrdersScreen extends StatelessWidget {
   static const routeName = '/orders';
@@ -56,8 +56,7 @@ class OrdersScreen extends StatelessWidget {
          * }
          * ```
          */
-        future: Provider.of<OrdersProvider>(context, listen: false)
-            .fetchAndSetOrders(),
+        future: Provider.of<Orders>(context, listen: false).fetchAndSetOrders(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -71,7 +70,7 @@ class OrdersScreen extends StatelessWidget {
             );
           }
 
-          return Consumer<OrdersProvider>(
+          return Consumer<Orders>(
             builder: (context, orderData, child) => ListView.builder(
               itemCount: orderData.orders.length,
               itemBuilder: (context, index) => OrderItem(

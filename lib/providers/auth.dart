@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_complete_guide/models/http_exception.dart';
 import 'package:http/http.dart' as http;
 
-class AuthProvider with ChangeNotifier {
+class Auth with ChangeNotifier {
   String _token;
   DateTime _expiryDate;
   String _userId;
@@ -21,6 +21,10 @@ class AuthProvider with ChangeNotifier {
     }
 
     return null;
+  }
+
+  String get userId {
+    return _userId;
   }
 
   Future<void> _authenticate(
