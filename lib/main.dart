@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 import './screens/products_overview_screen.dart';
@@ -51,7 +52,15 @@ class MyApp extends StatelessWidget {
             ),
             fontFamily: 'Lato',
           ),
-          home: auth.isAuthenticated ? ProductsOverviewScreen() : AuthScreen(),
+          home: auth.isAuthenticated
+              ? ProductsOverviewScreen()
+              : FutureBuilder(
+                  builder: (context, snapshot) =>
+                      snapshot.connectionState == ConnectionState.waiting
+                          ? SplashScreen()
+                          : AuthScreen(),
+                  future: auth.tryAutoLogin(),
+                ),
           routes: {
             ProductsOverviewScreen.routeName: (_) => ProductsOverviewScreen(),
             ProductDetailScreen.routeName: (_) => ProductDetailScreen(),
