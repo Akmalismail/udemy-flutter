@@ -21,9 +21,11 @@ class Order {
 class Orders with ChangeNotifier {
   List<Order> _orders = [];
   String authToken;
+  String userId;
 
-  void update(String token, List<Order> orders) {
+  void update(String token, String id, List<Order> orders) {
     authToken = token;
+    userId = id;
     _orders = orders;
   }
 
@@ -34,7 +36,7 @@ class Orders with ChangeNotifier {
   Future<void> fetchAndSetOrders() async {
     final url = Uri.https(
       'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/orders.json',
+      '/orders/$userId.json',
       {'auth': authToken},
     );
 
@@ -78,7 +80,7 @@ class Orders with ChangeNotifier {
   Future<void> addOrder(List<CartItem> cartProducts, double total) async {
     final url = Uri.https(
       'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/orders.json',
+      '/orders/$userId.json',
       {'auth': authToken},
     );
     final timestamp = DateTime.now();

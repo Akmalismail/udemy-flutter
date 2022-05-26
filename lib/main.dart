@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
           update: (_, auth, ordersProvider) => ordersProvider
             ..update(
               auth.token,
+              auth.userId,
               ordersProvider == null ? [] : ordersProvider.orders,
             ),
         ),
