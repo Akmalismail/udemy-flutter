@@ -29,11 +29,19 @@ class Products with ChangeNotifier {
     return _items.firstWhere((product) => product.id == id);
   }
 
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
     var url = Uri.https(
       'flutter-complete-guide-51951-default-rtdb.asia-southeast1.firebasedatabase.app',
       '/products.json',
-      {'auth': authToken},
+      {
+        'auth': authToken,
+        ...filterByUser
+            ? {
+                'orderBy': '"creatorId"',
+                'equalTo': '"$userId"',
+              }
+            : {}
+      },
     );
 
     try {
@@ -42,8 +50,6 @@ class Products with ChangeNotifier {
       final List<Product> loadedProducts = [];
 
       if (data == null) {
-        _items = loadedProducts;
-        notifyListeners();
         return;
       }
 
@@ -96,6 +102,7 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
+            'creatorId': userId,
           },
         ),
       );
