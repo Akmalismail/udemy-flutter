@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/screens/chat_screen.dart';
 import 'package:flutter_complete_guide/widgets/auth/auth_form.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -74,7 +75,22 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      body: AuthForm(_submitAuthForm, _isLoading),
+      body: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, userSnapshot) {
+          if (userSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          if (userSnapshot.hasData) {
+            return ChatScreen();
+          }
+
+          return AuthForm(_submitAuthForm, _isLoading);
+        },
+      ),
     );
   }
 }
