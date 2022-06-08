@@ -45,6 +45,10 @@ class _AuthScreenState extends State<AuthScreen> {
           'email': email,
         });
       }
+
+      setState(() {
+        _isLoading = false;
+      });
     } on FirebaseAuthException catch (error) {
       var message = 'An error occured, please check your credentials!';
 

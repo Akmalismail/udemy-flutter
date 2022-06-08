@@ -55,6 +55,7 @@ class _AuthFormState extends State<AuthForm> {
                 children: [
                   TextFormField(
                     key: ValueKey('email'),
+                    initialValue: 'a@b.com',
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(labelText: 'Email address'),
                     validator: (value) {
@@ -73,6 +74,7 @@ class _AuthFormState extends State<AuthForm> {
                   if (!_isLogin)
                     TextFormField(
                       key: ValueKey('username'),
+                      initialValue: 'Alice',
                       decoration: InputDecoration(labelText: 'Username'),
                       validator: (value) {
                         if (value.isEmpty || value.length < 4) {
@@ -87,6 +89,7 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                   TextFormField(
                     key: ValueKey('password'),
+                    initialValue: 'test123',
                     decoration: InputDecoration(labelText: 'Password'),
                     obscureText: true,
                     validator: (value) {
