@@ -33,6 +33,7 @@ class _NewMessageState extends State<NewMessage> {
               controller: _controller,
               decoration: InputDecoration(
                 labelText: 'Send a message...',
+                floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
               onChanged: (value) {
                 setState(() {
