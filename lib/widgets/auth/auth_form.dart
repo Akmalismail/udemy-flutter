@@ -77,8 +77,8 @@ class _AuthFormState extends State<AuthForm> {
                       initialValue: 'Alice',
                       decoration: InputDecoration(labelText: 'Username'),
                       validator: (value) {
-                        if (value.isEmpty || value.length < 4) {
-                          return 'Please enter at least 4 characters';
+                        if (value.isEmpty || value.length < 3) {
+                          return 'Please enter at least 3 characters';
                         }
 
                         return null;
