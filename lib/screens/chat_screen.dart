@@ -14,7 +14,7 @@ class ChatScreen extends StatelessWidget {
             child: DropdownButton(
               icon: Icon(
                 Icons.more_vert,
-                color: Theme.of(context).primaryIconTheme.color,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
               items: [
                 DropdownMenuItem(
