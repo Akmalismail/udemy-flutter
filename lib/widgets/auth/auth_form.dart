@@ -78,6 +78,7 @@ class _AuthFormState extends State<AuthForm> {
                     key: ValueKey('email'),
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(labelText: 'Email address'),
+                    textInputAction: TextInputAction.next,
                     validator: (value) {
                       if (value.isEmpty ||
                           !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -95,6 +96,7 @@ class _AuthFormState extends State<AuthForm> {
                     TextFormField(
                       key: ValueKey('username'),
                       decoration: InputDecoration(labelText: 'Username'),
+                      textInputAction: TextInputAction.next,
                       validator: (value) {
                         if (value.isEmpty || value.length < 3) {
                           return 'Please enter at least 3 characters';
@@ -109,6 +111,7 @@ class _AuthFormState extends State<AuthForm> {
                   TextFormField(
                     key: ValueKey('password'),
                     decoration: InputDecoration(labelText: 'Password'),
+                    textInputAction: TextInputAction.done,
                     obscureText: true,
                     validator: (value) {
                       if (value.isEmpty || value.length < 7) {
