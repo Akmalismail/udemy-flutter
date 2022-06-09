@@ -10,15 +10,42 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  var _isInit = true;
+
+  Future<void> _setupFirebaseMessaging() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await messaging.requestPermission();
+
+    print('User granted permission: ${settings.authorizationStatus}');
+
+    // onMessage
+    // foreground
+    FirebaseMessaging.onMessage.listen((message) {
+      print('onMessage');
+      print(message.toMap());
+    });
+
+    // onLaunch
+    // terminated -> foreground
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        print('onLaunch/getInitialMessage');
+        print(message.toMap());
+      }
+    });
+
+    // onResume
+    // background -> foreground
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('onMessageOpenedApp');
+      print(message.toMap());
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-    messaging.requestPermission().then((settings) {
-      print(
-          'User granted permission: ${settings.authorizationStatus == AuthorizationStatus.authorized}');
-    });
+    _setupFirebaseMessaging();
   }
 
   @override
