@@ -1,4 +1,4 @@
-package com.example.flutter_complete_guide
+package my.com.tmrnd.great_places
 
 import io.flutter.embedding.android.FlutterActivity
 
